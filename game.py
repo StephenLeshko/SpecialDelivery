@@ -105,7 +105,8 @@ def direction_choose():
             moving = True
         elif word == 'stop':
             moving = False
-        else:
+        elif word != 'no' or word != 'yes':
+            moving = True
             direction = word
         vc.kill_audio()
         vc.frames.clear()
@@ -119,7 +120,27 @@ def drop_time():
     if time_remain == 0:
         time_remain = 20
         second_counter -= 1
-        
+    if second_counter == 0:
+        game_over()
+
+def reset_time():
+    global time_remain, second_counter
+    time_remain = 20
+    second_counter = 120
+
+
+def game_over():
+    global game_active, car_rect, moving, direction, score_hud
+    game_active = False
+    fail_sound = pygame.mixer.Sound('fail.wav')
+    fail_sound.set_volume(1)
+    fail_sound.play()
+    car_rect.x, car_rect.y = 45, 30
+    moving = False
+    direction = 'down'
+    score_hud = font_big.render(f'Score: {score}', True, (240, 240, 10))
+    reset_time()
+
 
 def update():
     global car_vx, car_vy, car, car_rect, moving, time_hud
@@ -145,28 +166,36 @@ def update():
             else:
                 car_vx = 0
                 car_vy = 0
-    if moving == False:
-        car_vx = 0
-        car_vy = 0
+    
     #check collision
-    if check_collision():
+    elif check_collision():
         car_rect.x -= (2 * car_vx)
         car_rect.y -= (2 * car_vy)
         moving = False
+    if moving == False:
         car_vx = 0
         car_vy = 0
     car_rect.x += car_vx
     car_rect.y += car_vy
-    win()
+    
     drop_time()
     time_hud = font_med.render(f'Time: {second_counter}', True, (240, 8, 0))
+    win()
 
     
 def win():
+    global car_rect, moving, direction, score
     if pygame.Rect.colliderect(car_rect, customer_rect):
         coin = pygame.mixer.Sound('coin.wav')
         coin.set_volume(1)
         coin.play()
+        #record score, set to HUD
+        #turn off the game
+        direction = 'down'
+        moving = False
+        car_rect.x, car_rect.y = 45, 30
+        score += (second_counter) * 50
+        reset_time()
 
 #all the bliting takes place here
 def draw():
@@ -194,6 +223,7 @@ while True:
         if game_active == False:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_active = True
+                score = 0
     #draw & update cycle
     if game_active:
         update()
