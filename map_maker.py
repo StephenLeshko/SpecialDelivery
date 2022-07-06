@@ -25,6 +25,7 @@ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 """
 map_split = map.splitlines()
 map_split = map_split[1:]
+rect_list = []
 def build_map(screen):
     bg = pygame.image.load('images/game_bground.png')
     brick = pygame.image.load('images/brick.png').convert()
@@ -33,6 +34,9 @@ def build_map(screen):
     for y, line in enumerate(map_split):
         for x, char in enumerate(line):
             if char == 'B':
-                screen.blit(brick, (x * 30, y * 30))
+                new_brick = brick
+                rect = new_brick.get_rect(topleft=(x * 30, y * 30))
+                rect_list.append(rect)
+                screen.blit(brick, rect)
     pygame.image.save(screen, 'map.png')
     return True

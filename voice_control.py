@@ -16,7 +16,7 @@ from IPython import display
  
 #setting basics for creating an audio file
  
-FRAMES_PER_BUFFER = 3200 #frames per second
+FRAMES_PER_BUFFER = 800 #frames per second
 FORMAT = pyaudio.paInt16 #if stereo, make 32
 CHANNELS = 1 #if stereo, make 2
 RATE = 16000 #recording frequency
