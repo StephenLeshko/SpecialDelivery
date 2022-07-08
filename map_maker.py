@@ -24,28 +24,28 @@ B      B          B      B B           B
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 """
 
-map = """
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-"""
+# map = """
+# BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# B
+# BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+# """
 
 map_split = map.splitlines()
 map_split = map_split[1:]
