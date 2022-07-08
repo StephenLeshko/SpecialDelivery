@@ -39,8 +39,13 @@ car_rect = car.get_rect(topleft=(45, 30))
 score = 0
 
 #customer 
-customer = pygame.Surface((25, 25))
-customer.fill('Yellow')
+customer_1 = pygame.image.load('images/customer_1.png').convert_alpha()
+customer_2 = pygame.image.load('images/customer_2.png').convert_alpha()
+customer_3 = pygame.image.load('images/customer_3.png').convert_alpha()
+customer_4 = pygame.image.load('images/customer_2.png').convert_alpha()
+customers = [customer_1, customer_2, customer_3, customer_4]
+customer_index = 0.0
+customer = customers[0]
 customer_rect = customer.get_rect(topleft=(1110, 510))
 
 #game text
@@ -72,6 +77,13 @@ def animate_cars():
     if car_index > 4:
         car_index = 0
     car = cars[int(car_index)]
+
+def animate_customer():
+    global customer_index, customers, customer
+    customer_index += 0.3
+    if customer_index > 3:
+        customer_index = 0
+    customer = customers[int(customer_index)]
 
 def check_collision():
     
@@ -144,6 +156,7 @@ def game_over():
 
 def update():
     global car_vx, car_vy, car, car_rect, moving, time_hud
+    animate_customer()
     if direction_choose():
         if moving:
             animate_cars()
