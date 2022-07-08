@@ -218,6 +218,8 @@ def draw():
     screen.blit(time_hud, (1000, 40))
 
 
+
+
 mm.build_map(screen)
 game_bground = pygame.image.load('map.png').convert()
 bg_music = pygame.mixer.Sound('theme.wav')
@@ -225,6 +227,8 @@ bg_music.set_volume(0.2)
 bg_music.play(loops=-1)
 #audio setup
 
+space_duration = 50
+space_count = 0
 
 #---MAIN LOOP---
 while True:
@@ -242,8 +246,12 @@ while True:
         update()
         draw()
     else:
+        space_count += 1
         screen.blit(load_screen, (0, 0))
-        screen.blit(space_begin, space_rect)
+        if space_count > (space_duration / 2):
+            screen.blit(space_begin, space_rect)
+        if space_count == space_duration:
+            space_count = 0
         screen.blit(score_hud, (550, 200))
         screen.blit(controls, controls_rect)
     # if do:
