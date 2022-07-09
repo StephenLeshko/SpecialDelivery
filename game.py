@@ -152,7 +152,13 @@ def game_over():
     direction = 'down'
     score_hud = font_big.render(f'Score: {score}', True, (240, 240, 10))
     reset_time()
+    new_map()
 
+
+def new_map():
+    global game_bground
+    mm.build_map(screen)
+    game_bground = pygame.image.load('map.png').convert()
 
 def update():
     global car_vx, car_vy, car, car_rect, moving, time_hud
@@ -209,6 +215,7 @@ def win():
         car_rect.x, car_rect.y = 45, 30
         score += (second_counter) * 50
         reset_time()
+        new_map()
 
 #all the bliting takes place here
 def draw():
@@ -216,9 +223,6 @@ def draw():
     screen.blit(car, car_rect)
     screen.blit(customer, customer_rect)
     screen.blit(time_hud, (1000, 40))
-
-
-
 
 mm.build_map(screen)
 game_bground = pygame.image.load('map.png').convert()
@@ -254,9 +258,7 @@ while True:
             space_count = 0
         screen.blit(score_hud, (550, 200))
         screen.blit(controls, controls_rect)
-    # if do:
-    #     pygame.image.save(screen, 'dog.png')
-    #     do = False
+    
     pygame.display.update()
     #usually at 60... what does it actually run at
     clock.tick(20) #4.37 seconds at 90
