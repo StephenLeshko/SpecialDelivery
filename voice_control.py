@@ -25,9 +25,9 @@ RATE = 16000 #recording frequency
  
 #everything for the model
  
-commands = ['down', 'go', 'left', 'no', 'right', 'stop', 'up', 'yes']
+commands = ['down', 'go', 'left', 'right', 'stop', 'up']
  
-model = models.load_model('audioBasic1.h5')
+model = models.load_model('sd_model.h5')
  
  
 #turns audio into tensor
@@ -114,26 +114,3 @@ def create_audio(frames):
 def kill_audio():
     os.remove('noise.wav')
  
- 
-# for i in range(0, int(RATE/FRAMES_PER_BUFFER*seconds)):
-#     data = stream.read(FRAMES_PER_BUFFER)
-#     rms = audioop.rms(data, 2)
-#     # print(rms)
-#     if rms > 500 or making_file == True:
-#         making_file = True
-#         frames.append(data)
-#         file_count += 1
-       
-#     if (file_count == RATE/FRAMES_PER_BUFFER or rms < 150) and making_file:
-#         file_count = 0
-#         create_audio(frames)
-#         print(predict_audio('noise.wav'))
-#         kill_audio()
-#         frames.clear()
-#         making_file = False
-#     second_tracking += 1
-#     if second_tracking == RATE/FRAMES_PER_BUFFER:
-#         second_count += 1
-#         second_tracking = 0
-#         print(f'Time Left: {seconds - second_count} seconds')
-
