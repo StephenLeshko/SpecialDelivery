@@ -35,7 +35,7 @@ car_5 = pygame.image.load('images/car_5.png').convert_alpha()
 cars = [car_1, car_2, car_3, car_4, car_5]
 car_index = 0.0
 car_vx, car_vy = 0, 0
-car_rect = car.get_rect(topleft=(45, 30))
+car_rect = car.get_rect(center=(42, 42))
 score = 0
 
 #customer 
@@ -46,7 +46,7 @@ customer_4 = pygame.image.load('images/customer_2.png').convert_alpha()
 customers = [customer_1, customer_2, customer_3, customer_4]
 customer_index = 0.0
 customer = customers[0]
-customer_rect = customer.get_rect(topleft=(1110, 510))
+customer_rect = customer.get_rect(topleft=(1112, 510))
 
 #game text
 font_big = pygame.font.Font('freesansbold.ttf', 70)
@@ -90,7 +90,7 @@ def check_collision():
     if len(mm.rect_list) != 0:
         for rect in mm.rect_list:
             if pygame.Rect.colliderect(car_rect, rect):
-                print('collision')
+                # print('collision')
                 return True
     return False
 
@@ -226,9 +226,12 @@ def draw():
 
 mm.build_map(screen)
 game_bground = pygame.image.load('map.png').convert()
-bg_music = pygame.mixer.Sound('theme.wav')
-bg_music.set_volume(0.2)
-bg_music.play(loops=-1)
+
+#theme musics
+# bg_music = pygame.mixer.Sound('theme.wav')
+# bg_music.set_volume(0.2)
+# bg_music.play(loops=-1)
+
 #audio setup
 
 space_duration = 50
