@@ -1,4 +1,9 @@
 # SpecialDelivery
 
 ## Welcome to Special Delivery!
-In special delivery, you must drive the Pizzaria-Delivery-Mobile to the customer before they get too angry. Use voice commands to drive the Pizzaria-Delivery-Mobile.
+In this game, your goal is to drive the car through the maze to get to the customer within a certain time. Control the car using voice commands and complete as fast as possible to achieve a higher score.
+
+Aspects include:
+- Language Recognition model trained using tensorflow
+- Audio input
+- Random map generation using depth-first traversal
