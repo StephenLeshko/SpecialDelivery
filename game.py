@@ -10,7 +10,7 @@ import audioop
 
 
 pygame.init()
-screen = pygame.display.set_mode((1200, 600))
+screen = pygame.display.set_mode((1230, 630)) #orig: 1200, 600
 pygame.display.set_caption('Special Delivery')
 clock = pygame.time.Clock()
 
@@ -105,10 +105,6 @@ def direction_choose():
         vc.frames.append(data)
         vc.file_count += 1
     if (vc.file_count >= vc.RATE/vc.FRAMES_PER_BUFFER or rms < 150) and vc.making_file:
-        # if rms < 100:
-        #     print('RMS did')
-        # elif vc.file_count == 40:
-        #     print('file')
         vc.file_count = 0
         vc.create_audio(vc.frames)
         word = vc.predict_audio('noise.wav')
@@ -227,13 +223,12 @@ def draw():
 mm.build_map(screen)
 game_bground = pygame.image.load('map.png').convert()
 
-#theme musics
-# bg_music = pygame.mixer.Sound('theme.wav')
-# bg_music.set_volume(0.2)
-# bg_music.play(loops=-1)
+#theme music
+bg_music = pygame.mixer.Sound('theme.wav')
+bg_music.set_volume(0.2)
+bg_music.play(loops=-1)
 
 #audio setup
-
 space_duration = 50
 space_count = 0
 
@@ -259,9 +254,8 @@ while True:
             screen.blit(space_begin, space_rect)
         if space_count == space_duration:
             space_count = 0
-        screen.blit(score_hud, (550, 200))
+        screen.blit(score_hud, (496, 200))
         screen.blit(controls, controls_rect)
     
     pygame.display.update()
-    #usually at 60... what does it actually run at
-    clock.tick(20) #4.37 seconds at 90
+    clock.tick(20)

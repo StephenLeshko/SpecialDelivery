@@ -3,81 +3,6 @@ import pygame
 import random
 pygame.init()
 
-map1 = """
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B  B            B       B     B        B
-B  B     B      B       B     B        B
-B  B     BBBBB  B  BBB  B  B  B  B     B
-B  B         B  B  B B  B  B  B  B     B
-B  B         B     B B     B  B  B     B
-B  BBBBBBB   B     B B     B     B     B
-B            B  B  BBBBBBBBBBBBBBB     B
-B            B  B             B        B
-BBBB  BBBBBBBB  B      B      B        B
-B  B  B         B      B      B     BBBB
-B  B  B         B      B               B
-BBBB  BBB  BBBBBB   B  BBBBBBBB   BBBBBB            
-B       B  B        B  B      B        B
-B       B  B        B  B BBB  B  BBB   B
-B  BBBBBB      BBBBBB  B B B  B  BBB   B
-B  B           B    B  B B B  B        B
-B  BB  BB  BBBBB  B BBBB B B  BBBBBB   B
-B      B          B      B B           B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-"""
-
-map2 = """
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-"""
-
-map3 = """
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-B B B B B B B B B B B B B B B B B B B B B
-BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-"""
-
-
-
-#Last thing to implement: Random Maze Generation....
-maps = [map1, map2, map3]
-map_num = 2
 
 #ex: 'b2' : {'edges' : ['b4', 'd2'], 'walls': ['b3', 'c2']}
 def build_graph(width, height):
@@ -125,26 +50,17 @@ def depth_search_maze(graph):
             #randomly inspect each of the neighbors
             edge_num = len(graph[cur]['edges'])
             ran_list = random.sample(range(0, edge_num), edge_num)
-            # first = True
             for i in range(edge_num):
                 edge = graph[cur]['edges'][ran_list[i]]                    
                 if edge not in visited:
                     stack.append(edge)
                     wall = graph[cur]['walls'][ran_list[i]]
                     wall_stack.append(wall)
-                    # if first:
-                    #     remove_walls.add(wall_stack.pop())
-                    #     first = False
+
     return remove_walls
 
 def create_code(letter_val, num):
     return str(chr(letter_val)) + str(num + 1)
-# print(build_graph(7, 7))
-
-
-# map_split = map.splitlines()
-# map_split = map_split[1:]
-# rect_list = []
 
 def clear_map():
     global rect_list
@@ -154,16 +70,33 @@ def prepare_map(game_map):
     game_map = game_map.splitlines()
     return game_map[1:]
 
+def map_string(width, height):
+    string = '\n'
+    for i in range(height):
+        if i % 2 == 0:
+            added = width * 'B'
+            string += added
+            string += '\n'
+        else:
+            for j in range(width):
+                if j % 2 == 0:
+                    string += 'B'
+                else: string += ' '
+            string += '\n'
+    return string
+
+
 #just for creating a map image & saving the rects
 def build_map(screen):
-    global map_num
     clear_map()
     bg = pygame.image.load('images/game_bground.png')
-    brick = pygame.image.load('images/brick.png').convert()
-    width, height = 41, 21
+    brick_single = pygame.image.load('images/brick_sin30.png').convert()
+    brick_hor = pygame.image.load('images/brick_hor30.png').convert()
+    brick_ver = pygame.image.load('images/brick_ver30.png').convert()
+    width, height = 21, 11
     #map selection
-    map = maps[map_num]
-    map = prepare_map(map)
+    # map = maps[map_num]
+    map = prepare_map(map_string(width, height))
 
     
     removal = depth_search_maze(build_graph(width, height))
@@ -173,10 +106,22 @@ def build_map(screen):
         for x, char in enumerate(line):
             code = create_code(65 + y, x)
             if char == 'B' and code not in removal:
-                new_brick = brick
-                rect = new_brick.get_rect(topleft=(x * 30, y * 30))
-                rect_list.append(rect)
-                screen.blit(brick, rect)
+                #coordinates
+                x_mult = x // 2
+                y_mult = y // 2
+            
+                if x % 2 == 0 and y % 2 == 0: #singular brick
+                    rect = brick_single.get_rect(topleft=(x_mult * 120, y_mult * 120))
+                    rect_list.append(rect)
+                    screen.blit(brick_single, rect)
+                    
+                elif x % 2 == 1: #horizontal
+                    rect = brick_hor.get_rect(topleft=(x_mult * 120 + 30, y_mult * 120))
+                    rect_list.append(rect)
+                    screen.blit(brick_hor, rect)
+                else: #vertical
+                    rect = brick_ver.get_rect(topleft=(x_mult * 120, y_mult * 120 + 30))
+                    rect_list.append(rect)
+                    screen.blit(brick_ver, rect) 
     pygame.image.save(screen, 'map.png')
-    # map_num += 1
     return True
